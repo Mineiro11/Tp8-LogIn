@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 
-export default function App() {
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import MyTabs from './Pantallatp9';
+
+
+function LoginScreen({ navigation }) {
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
 
   const manejarContacto = () => {
-    Alert.alert('Mensaje enviado', usuario || 'No escribiste nada');
+  //importante
+    navigation.navigate('MyTabs', { screen: 'Home', params: { usuario, contrasena } });
   };
 
   return (
@@ -18,8 +25,6 @@ export default function App() {
         style={styles.background}
       >
         <StatusBar style="auto" />
-
-    
 
         <View style={styles.card}>
           <View style={styles.perfilContainer}>
@@ -51,6 +56,20 @@ export default function App() {
         </View>
       </ImageBackground>
     </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="MyTabs" component={MyTabs} />
+        {}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
